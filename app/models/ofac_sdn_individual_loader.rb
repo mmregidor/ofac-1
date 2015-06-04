@@ -129,7 +129,8 @@ class OfacSdnIndividualLoader
       value_array = convert_line_to_array(line)
       {:id => value_array[0],
        :address => value_array[2].try(:upcase),
-       :city => value_array[3].try(:upcase)
+       :city => value_array[3].try(:upcase),
+       :country => value_array[4].try(:upcase)
       }
     end
   end
@@ -179,7 +180,8 @@ class OfacSdnIndividualLoader
             #:created_at
             "`#{@db_time}`|" +
             # updated_at
-            "`#{@db_time}`" + "\n"
+            "`#{@db_time}`|" +
+            "`#{record_hash[:country]}`\n"
     new_line
   end
 
@@ -320,7 +322,7 @@ class OfacSdnIndividualLoader
     yield "Importing into Mysql..." if block_given?
 
     mysql_command = <<-TEXT
-    LOAD DATA LOCAL INFILE '#{csv_file.path}' REPLACE INTO TABLE ofac_sdn_individuals FIELDS TERMINATED BY '|' ENCLOSED BY "`" LINES TERMINATED BY '\n' (last_name, first_name_1, first_name_2, first_name_3, first_name_4, first_name_5, first_name_6, first_name_7, first_name_8, alternate_last_name, alternate_first_name_1, alternate_first_name_2, alternate_first_name_3, alternate_first_name_4, alternate_first_name_5, alternate_first_name_6, alternate_first_name_7, alternate_first_name_8, address, city, created_at, updated_at);
+    LOAD DATA LOCAL INFILE '#{csv_file.path}' REPLACE INTO TABLE ofac_sdn_individuals FIELDS TERMINATED BY '|' ENCLOSED BY "`" LINES TERMINATED BY '\n' (last_name, first_name_1, first_name_2, first_name_3, first_name_4, first_name_5, first_name_6, first_name_7, first_name_8, alternate_last_name, alternate_first_name_1, alternate_first_name_2, alternate_first_name_3, alternate_first_name_4, alternate_first_name_5, alternate_first_name_6, alternate_first_name_7, alternate_first_name_8, address, city, created_at, updated_at, country);
     TEXT
 
     OfacSdnIndividual.connection.execute(mysql_command)
