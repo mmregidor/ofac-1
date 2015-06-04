@@ -109,8 +109,8 @@ class OfacSdnIndividualLoader
         last_name, first_name = value_array[1].to_s.split(',')
         last_name.try(:gsub!, /[[:punct:]]/, '')
         first_name1, first_name2, first_name3, first_name4, first_name5, first_name6, first_name7, first_name8 = first_name.try(:gsub, /[[:punct:]]/, '').try(:split, ' ')
-        nationality_match = line.match(/nationality [a-zA-Z]*;/)
-        nationality = nationality_match.nil? ? '' : nationality_match[0].split(' ')[1].chop
+        nationality_match = line.match(/[n|N]ationality [a-zA-Z]*/)
+        nationality = nationality_match.nil? ? '' : nationality_match[0].split(' ')[1]
         {id: value_array[0],
          last_name: last_name.try(:upcase),
          first_name_1: first_name1.try(:upcase),
