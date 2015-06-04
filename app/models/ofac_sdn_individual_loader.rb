@@ -109,6 +109,8 @@ class OfacSdnIndividualLoader
         last_name, first_name = value_array[1].to_s.split(',')
         last_name.try(:gsub!, /[[:punct:]]/, '')
         first_name1, first_name2, first_name3, first_name4, first_name5, first_name6, first_name7, first_name8 = first_name.try(:gsub, /[[:punct:]]/, '').try(:split, ' ')
+        nationality_match = line.match(/nationality [a-zA-Z]*;/)
+        nationality = nationality_match.nil? ? '' : nationality_match[0].split(' ')[1].chop
         {id: value_array[0],
          last_name: last_name.try(:upcase),
          first_name_1: first_name1.try(:upcase),
@@ -118,7 +120,8 @@ class OfacSdnIndividualLoader
          first_name_5: first_name5.try(:upcase),
          first_name_6: first_name6.try(:upcase),
          first_name_7: first_name7.try(:upcase),
-         first_name_8: Array(first_name8).first.try(:upcase) # in case the first name has more than 8 parts, only take up to 8.
+         first_name_8: Array(first_name8).first.try(:upcase),
+         nationality: nationality
         }
       end
     end
@@ -181,7 +184,8 @@ class OfacSdnIndividualLoader
             "`#{@db_time}`|" +
             # updated_at
             "`#{@db_time}`|" +
-            "`#{record_hash[:country]}`\n"
+            "`#{record_hash[:country]}`|" +
+            "`#{record_hash[:nationality]}`\n"
     new_line
   end
 
@@ -322,7 +326,7 @@ class OfacSdnIndividualLoader
     yield "Importing into Mysql..." if block_given?
 
     mysql_command = <<-TEXT
-    LOAD DATA LOCAL INFILE '#{csv_file.path}' REPLACE INTO TABLE ofac_sdn_individuals FIELDS TERMINATED BY '|' ENCLOSED BY "`" LINES TERMINATED BY '\n' (last_name, first_name_1, first_name_2, first_name_3, first_name_4, first_name_5, first_name_6, first_name_7, first_name_8, alternate_last_name, alternate_first_name_1, alternate_first_name_2, alternate_first_name_3, alternate_first_name_4, alternate_first_name_5, alternate_first_name_6, alternate_first_name_7, alternate_first_name_8, address, city, created_at, updated_at, country);
+    LOAD DATA LOCAL INFILE '#{csv_file.path}' REPLACE INTO TABLE ofac_sdn_individuals FIELDS TERMINATED BY '|' ENCLOSED BY "`" LINES TERMINATED BY '\n' (last_name, first_name_1, first_name_2, first_name_3, first_name_4, first_name_5, first_name_6, first_name_7, first_name_8, alternate_last_name, alternate_first_name_1, alternate_first_name_2, alternate_first_name_3, alternate_first_name_4, alternate_first_name_5, alternate_first_name_6, alternate_first_name_7, alternate_first_name_8, address, city, created_at, updated_at, country, nationality);
     TEXT
 
     OfacSdnIndividual.connection.execute(mysql_command)
