@@ -67,8 +67,11 @@ class OfacMatch
     unless @stats.nil?
       #need to make sure we check the name first, since city and address don't
       #get added to the score unless there is a name match
-      [:name,:city,:address, :country].each do |field|
+      [:name,:city,:address, :country, :nationality].each do |field|
         data = @stats[field]
+
+        next if data.nil?
+
         if (data[:token].blank?)
           value = 0 #token is blank can't be sure of a match if nothing to match against
         else

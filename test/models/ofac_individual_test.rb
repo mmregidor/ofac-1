@@ -103,6 +103,14 @@ class OfacIndividualTest < ActiveSupport::TestCase
       should "give a score of 125 if country is specified" do
         assert_equal 125, OfacIndividual.new({:name => 'Oscar Hernandez', :city => 'Clearwater', :address => '123 somewhere ln', :country => 'united states'}).score
       end
+
+      should "give a score of 125 if nationality is specified" do
+        assert_equal 125, OfacIndividual.new({:name => 'Oscar Hernandez', :city => 'Clearwater', :address => '123 somewhere ln', :nationality => 'pakistan'}).score
+      end
+
+      should "give a score of 150 if country and nationality is specified" do
+        assert_equal 150, OfacIndividual.new({:name => 'Oscar Hernandez', :city => 'Clearwater', :address => '123 somewhere ln', :country => 'united states', :nationality => 'pakistan'}).score
+      end
     end
 
     context '#possible_hits' do

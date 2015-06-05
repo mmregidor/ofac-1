@@ -137,7 +137,8 @@ class OfacIndividual
         match = OfacMatch.new({:name => {:weight => 60, :token => "#{name_array.join(', ')}"},
             :address => {:weight => 10, :token => @identity[:address]},
             :city => {:weight => 30, :token => @identity[:city]},
-            :country => {:weight => 25, :token => @identity[:country]}})
+            :country => {:weight => 25, :token => @identity[:country]},
+            :nationality => {:weight => 25, :token => @identity[:nationality]}})
 
         score = match.score(possible_sdns)
         @possible_hits = match.possible_hits
