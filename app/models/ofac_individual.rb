@@ -132,11 +132,12 @@ class OfacIndividual
       name_array.delete_if{|n| n.strip.size < 2}
       unless name_array.empty?
         possible_sdns = OfacSdnIndividual.possible_sdns(name_array, use_ors = true)
-        possible_sdns = possible_sdns.collect {|sdn|{:name => "#{sdn.name}|#{sdn.alternate_identity_name}", :city => sdn.city, :address => sdn.address}}
+        possible_sdns = possible_sdns.collect {|sdn|{:name => "#{sdn.name}|#{sdn.alternate_identity_name}", :city => sdn.city, :address => sdn.address, :country => sdn.country,  :nationality => sdn.nationality}}
 
         match = OfacMatch.new({:name => {:weight => 60, :token => "#{name_array.join(', ')}"},
             :address => {:weight => 10, :token => @identity[:address]},
-            :city => {:weight => 30, :token => @identity[:city]}})
+            :city => {:weight => 30, :token => @identity[:city]},
+            :country => {:weight => 25, :token => @identity[:country]}})
 
         score = match.score(possible_sdns)
         @possible_hits = match.possible_hits

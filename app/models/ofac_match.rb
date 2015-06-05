@@ -41,9 +41,10 @@ class OfacMatch
     unless match_records.empty?
       #place the match_records information
       #into our @stats hash
+
       match_records.each do |match|
         match.each do |key, value|
-          @stats[key.to_sym][:match] = value.to_s.upcase
+          @stats[key.to_sym][:match] = value.to_s.upcase unless @stats[key.to_sym].nil?
         end
         record_score = calculate_record
         score_results.push(record_score)
@@ -66,7 +67,7 @@ class OfacMatch
     unless @stats.nil?
       #need to make sure we check the name first, since city and address don't
       #get added to the score unless there is a name match
-      [:name,:city,:address].each do |field|
+      [:name,:city,:address, :country].each do |field|
         data = @stats[field]
         if (data[:token].blank?)
           value = 0 #token is blank can't be sure of a match if nothing to match against

@@ -99,6 +99,10 @@ class OfacIndividualTest < ActiveSupport::TestCase
         #:name has a weight of 60, so a sounds like is worth 45
         assert_equal 45, OfacIndividual.new({:name => {:first_name => 'Louis Eduardo', :last_name => 'Lopez Mendez'}, :city => 'Las Vegas', :address => 'no match'}).score
       end
+
+      should "give a score of 125 if country is specified" do
+        assert_equal 125, OfacIndividual.new({:name => 'Oscar Hernandez', :city => 'Clearwater', :address => '123 somewhere ln', :country => 'united states'}).score
+      end
     end
 
     context '#possible_hits' do
