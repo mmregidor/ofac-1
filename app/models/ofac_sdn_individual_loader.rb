@@ -19,7 +19,7 @@ class OfacSdnIndividualLoader
     yield "Downloading OFAC data from http://www.treas.gov/offices/enforcement/ofac/sdn" if block_given?
     #get the 3 data files
     sdn = Tempfile.new('sdn')
-    uri = URI.parse('http://www.treasury.gov/ofac/downloads/sdn.pip')
+    uri = URI.parse('https://www.treasury.gov/ofac/downloads/sdn.pip')
     proxy_addr, proxy_port = ENV['http_proxy'].gsub("http://", "").split(/:/) if ENV['http_proxy']
 
     bytes = sdn.write(Net::HTTP::Proxy(proxy_addr, proxy_port).get(uri))
