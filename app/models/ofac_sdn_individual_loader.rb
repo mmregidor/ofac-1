@@ -335,7 +335,5 @@ class OfacSdnIndividualLoader
     OfacSdnIndividual.connection.execute(mysql_command)
     puts "Mysql import complete."
     yield "Mysql import complete." if block_given?
-
   end
-
 end
