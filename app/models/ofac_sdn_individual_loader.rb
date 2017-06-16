@@ -126,7 +126,7 @@ class OfacSdnIndividualLoader
          first_name_8: Array(first_name8).first.try(:upcase),
          nationality: nationality
         }
-      end
+      #end
     end
   end
 
