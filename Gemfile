@@ -13,4 +13,5 @@ group :test do
   gem 'minitest'
   gem 'minitest-reporters' # Rubymine needs this
   gem 'mocha', :require => false # gives us stubs and mocks
+  gem 'mysql2'
 end
