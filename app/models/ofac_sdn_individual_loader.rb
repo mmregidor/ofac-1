@@ -103,7 +103,7 @@ class OfacSdnIndividualLoader
   end
 
   def self.sdn_text_to_hash(line)
-    if line.present?
+    if line.nil?
       value_array = convert_line_to_array(line)
       if value_array[2] == 'individual' # sdn_type
         last_name, first_name = value_array[1].to_s.split(',')
